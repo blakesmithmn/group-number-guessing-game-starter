@@ -1,12 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 let randomNumber = 0;
 // here is where we generate the first random number
 numberGenerator();
 // This must be added before GET & POST routes.
-app.use(bodyParser.urlencoded({extended:true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // Serve up static files (HTML, CSS, Client JS)
 app.use(express.static('server/public'));
@@ -25,32 +25,32 @@ app.post('/numbers', (req, res) => {
   res.sendStatus(200);
 }) //original post route for game
 
-app.get('/numbers', (req,res)=>{
+app.get('/numbers', (req, res) => {
   console.log('get request received');
   res.send(results);
 })
 
 
-function numberGenerator (){
-  randomNumber = Math.floor(Math.random()* (25-1)+1);
+function numberGenerator() {
+  randomNumber = Math.floor(Math.random() * (25 - 1) + 1);
   return randomNumber;
-  
+
 }
 //create comparison function
 let results = [];
 
-function numberComparison(){
+function numberComparison() {
   let guessArray = Object.values(numbersGuessed);
   console.log(guessArray);
   results = []
-  for (let guess of guessArray){
-    if (Number(guess) === randomNumber){
+  for (let guess of guessArray) {
+    if (Number(guess) === randomNumber) {
       results.push('You Win!');
     }
-    else if (Number(guess) > randomNumber){
+    else if (Number(guess) > randomNumber) {
       results.push('Too High!');
     }
-    else if (Number(guess) < randomNumber){
+    else if (Number(guess) < randomNumber) {
       results.push('Too Low!');
     }
   }
@@ -67,5 +67,5 @@ app.post('/reset', (req, res) => {
 
 
 app.listen(PORT, () => {
-  console.log ('Server is running on port', PORT)
+  console.log('Server is running on port', PORT)
 })
